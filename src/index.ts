@@ -2,6 +2,7 @@ import fastify from "fastify";
 import { version } from "../package.json";
 import autoLoad from "@fastify/autoload";
 import { dirname, join } from "path";
+const fastifyStatic = require('@fastify/static')
 // import * as schedule from "node-schedule";
 
 const __dirname = dirname(__filename);
@@ -23,8 +24,14 @@ server.register(autoLoad, {
   dir: join(__dirname, "plugins"),
 });
 
-server.register(require("@fastify/static"), {
+server.register(fastifyStatic, {
   root: join(__dirname, "assets"),
+});
+
+server.register(fastifyStatic, {
+  root: join(__dirname, "node_modules"),
+  prefix: '/module_scripts/',
+  decorateReply: false //
 });
 
 server.register(require("@fastify/cookie"), {
