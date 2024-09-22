@@ -28,11 +28,13 @@ server.register(fastifyStatic, {
   root: join(__dirname, "assets"),
 });
 
-server.register(fastifyStatic, {
-  root: join(__dirname, "node_modules"),
-  prefix: '/module_scripts/',
-  decorateReply: false //
+server.register(fastifyStatic, {  
+  root: join(__dirname, "../node_modules/"),
+  prefix: "/libs/",
+  decorateReply: false,
 });
+
+
 
 server.register(require("@fastify/cookie"), {
   secret: "lEjoCdDLFL", // for cookies signature
