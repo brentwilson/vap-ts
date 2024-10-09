@@ -1,3 +1,20 @@
-<footer>
-  <p>&copy; 2021 Veteran's Alliance Partners</p>
-</footer>  
+<footer class="container mx-auto bg-white py-8 border-t border-gray-400">
+  <div class="container flex px-3 py-8">
+    <div class="w-full mx-auto flex flex-wrap">
+      <div class="flex w-full lg:w-1/2">
+        <div class="px-3 md:px-0">
+          <p class="py-4">
+            &copy; <span id="currentYear"></span> Veteran's Alliance Partners
+          </p>
+        </div>
+      </div>  
+  </div>
+</footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var currentYear = new Date().getFullYear();
+    console.log(currentYear);
+    document.getElementById("currentYear").textContent = currentYear;
+  });
+</script>
