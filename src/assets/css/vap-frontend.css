@@ -138,6 +138,18 @@ body {
   color: #000;
 }
 
+#carousel-container {
+  max-width: 1600px;
+}
+
+#main-hero {
+  background-image: url("/static/images/main-hero-bg.png");
+  height: 70vh;
+  background-position: 30%;
+  background-repeat: none;
+  background-size: cover;
+}
+
 /* navbar */
 
 #logo {
@@ -147,4 +159,53 @@ body {
 .bg-darkGreen {
   --tw-bg-opacity: 1;
   background-color: rgb(108 149 157 / var(--tw-bg-opacity));
+}
+
+/*  Buttons */
+
+.btn-primary {
+  background-color: #25408f;
+}
+
+.btn-primary:hover {
+  background-color: #1a2d6d;
+}
+
+.btn-primary:active {
+  background-color: #1a2d6d;
+}
+
+/* cart style */
+.cart-window {
+  display: none;
+  width: 40vw;
+  background: #fff;
+  border: #1a2d6d solid 2px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  overflow: auto;
+}
+
+.close-cart {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.cart-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+}
+
+#top-bar {
+  background-color: #25408f;
+  height: 30px;
 }

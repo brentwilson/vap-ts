@@ -2,7 +2,8 @@ import fastify from "fastify";
 import { version } from "../package.json";
 import autoLoad from "@fastify/autoload";
 import { dirname, join } from "path";
-const fastifyStatic = require('@fastify/static')
+const fastifyStatic = require("@fastify/static");
+import fastifyMultipart from "@fastify/multipart";
 // import * as schedule from "node-schedule";
 
 const __dirname = dirname(__filename);
@@ -16,6 +17,8 @@ const server = fastify({
   },
 });
 
+server.register(fastifyMultipart);
+
 server.register(autoLoad, {
   dir: join(__dirname, "routes"),
 });
@@ -28,13 +31,11 @@ server.register(fastifyStatic, {
   root: join(__dirname, "assets"),
 });
 
-server.register(fastifyStatic, {  
+server.register(fastifyStatic, {
   root: join(__dirname, "../node_modules/"),
   prefix: "/libs/",
   decorateReply: false,
 });
-
-
 
 server.register(require("@fastify/cookie"), {
   secret: "lEjoCdDLFL", // for cookies signature
@@ -50,7 +51,6 @@ server.register(require("@fastify/view"), {
 });
 
 server.listen({ port: 3300 }, (err, address) => {
-
   if (err) {
     console.error(err);
     process.exit(1);
