@@ -45,7 +45,7 @@ export const updateQuote = async (quote) => {
     data: {
       ...quote,
       items: {
-        create: quote.items,
+        updateMany: quote.items,
       },
     },
   });
@@ -59,13 +59,13 @@ export const upsertQuote = async (quote) => {
     update: {
       ...quote,
       items: {
-        create: quote.items,
+        updateMany: quote.items,
       },
     },
     create: {
       ...quote,
       items: {
-        create: quote.items,
+        createMany: quote.items,
       },
     },
   });
