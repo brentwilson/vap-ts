@@ -1,5 +1,16 @@
 import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+const prisma = new PrismaClient().$extends({
+  result: {
+    quoteItem: {
+      total: {
+        needs: { quantity: true, price: true },
+        compute(quoteItem) {
+          return `${quoteItem.quantity} * ${quoteItem.price}`;
+        },
+      },
+    },
+  },
+});
 
 export const getQuotes = async (account: any) => {
   let quotes = await prisma.quote.findMany({
