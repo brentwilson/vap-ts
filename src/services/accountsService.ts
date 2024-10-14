@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import * as argon from 'argon2';
+import * as argon from "argon2";
 const prisma = new PrismaClient();
 
 export const getAccounts = async () => {
@@ -9,8 +9,8 @@ export const getAccounts = async () => {
 export const getAccount = async (id) => {
   return await prisma.account.findUnique({
     where: {
-      id: id
-    }
+      id: id,
+    },
   });
 };
 
@@ -18,45 +18,61 @@ export const createAccount = async (account) => {
   return await prisma.account.create({
     data: {
       ...account,
-      password: await argon.hash(account.password)
-    }
+      password: await argon.hash(account.password),
+    },
   });
 };
 
 export const updateAccount = async (account) => {
   return await prisma.account.update({
     where: {
-      id: account.id
+      id: account.id,
     },
     data: {
       ...account,
-      password: await argon.hash(account.password)
-    }
+      password: await argon.hash(account.password),
+    },
   });
 };
 
 export const deleteAccount = async (id) => {
   return await prisma.account.delete({
     where: {
-      id: id
-    }
+      id: id,
+    },
+  });
+};
+
+export const upsertAccount = async (account) => {
+  return await prisma.account.upsert({
+    where: {
+      id: account.id,
+    },
+    update: {
+      ...account,
+      password: await argon.hash(account.password),
+    },
+    create: {
+      ...account,
+      password: await argon.hash(account.password),
+    },
   });
 };
 
 export const login = async (email, password) => {
   const account = await prisma.account.findUnique({
     where: {
-      email: email
-    }
+      email: email,
+    },
   });
 
   if (!account) {
-    throw new Error('Invalid email or password');
+    throw new Error("Invalid email or password");
   }
 
-  if (!await argon.verify(account.password, password)) {
-    throw new Error('Invalid email or password');
+  if (!(await argon.verify(account.password, password))) {
+    throw new Error("Invalid email or password");
   }
 
   return account;
-}
+};

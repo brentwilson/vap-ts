@@ -13,107 +13,106 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Account {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  email_verified Boolean @default(false)
-  first     String?
-  last      String?
-  password  String
-  company   Company? @relation(fields: [companyId], references: [id])
-  companyId String?
-  quotes    Quote[]
-  sessionToken String?
-  roles     AccountRoles[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String         @id @default(cuid())
+  email          String         @unique
+  email_verified Boolean        @default(false)
+  first          String?
+  last           String?
+  password       String
+  company        Company?       @relation(fields: [companyId], references: [id])
+  companyId      String?
+  quotes         Quote[]
+  sessionToken   String?
+  roles          AccountRoles[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 }
 
 model Role {
-  id        String   @id @default(cuid())
+  id        String         @id @default(cuid())
   name      String
   accounts  AccountRoles[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
 }
 
 model AccountRoles {
   id        String   @id @default(cuid())
-  account   Account @relation(fields: [accountId], references: [id])
+  account   Account  @relation(fields: [accountId], references: [id])
   accountId String
-  role      Role @relation(fields: [roleId], references: [id])
+  role      Role     @relation(fields: [roleId], references: [id])
   roleId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Company {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   Account   Account[]
-
 }
 
 model ProductCategory {
-  id        String   @id @default(cuid())
-  name      String
-  description String?
+  id            String              @id @default(cuid())
+  name          String
+  description   String?
   meta_keywords String?
-  products ProductOnCategory[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  products      ProductOnCategory[]
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
 }
 
 model Product {
-  id        String   @id @default(cuid())
-  sku      String   @unique
-  name      String
-  image_url String?
-  lot_size   Int
-  is_active Boolean @default(true)
-  base_price     Float
-  description String?
-  current_stock  Int?
-  categories ProductOnCategory[]
-  quotes    QuoteItem[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String              @id @default(cuid())
+  sku           String              @unique
+  name          String
+  image_url     String?
+  lot_size      Int
+  is_active     Boolean             @default(true)
+  base_price    Float
+  description   String?
+  current_stock Int?
+  categories    ProductOnCategory[]
+  quotes        QuoteItem[]
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
 }
 
 model ProductOnCategory {
-  id        String   @id @default(cuid())
-  product   Product @relation(fields: [productId], references: [id])
-  productId String
-  category  ProductCategory @relation(fields: [categoryId], references: [id])
+  id         String          @id @default(cuid())
+  product    Product         @relation(fields: [productId], references: [id])
+  productId  String
+  category   ProductCategory @relation(fields: [categoryId], references: [id])
   categoryId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
 }
 
 enum QuoteStatus {
   Quote
-  WorkOrder 
+  WorkOrder
   Invoice
+  Paid
 }
 
 model Quote {
-  id        String   @id @default(cuid())
-  account   Account @relation(fields: [accountId], references: [id])
+  id        String      @id @default(cuid())
+  account   Account     @relation(fields: [accountId], references: [id])
   accountId String
-  status    QuoteStatus
+  status    QuoteStatus @default(Quote)
   items     QuoteItem[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 }
 
 model QuoteItem {
   id        String   @id @default(cuid())
-  quote     Quote @relation(fields: [quoteId], references: [id])
+  quote     Quote    @relation(fields: [quoteId], references: [id])
   quoteId   String
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
   productId String
   quantity  Int
   price     Float
