@@ -26,6 +26,63 @@ export const getQuotes = async (account: any) => {
   return quotes;
 };
 
+export const getQuoteItems = async (quoteId: string) => {
+  return await prisma.quoteItem.findMany({
+    where: {
+      quoteId: quoteId,
+    },
+  });
+};
+
+export const getQuoteItem = async (itemId: string) => {
+  return await prisma.quoteItem.findUnique({
+    where: {
+      id: itemId,
+    },
+  });
+};
+
+export const upsertQuoteItem = async (quoteItem) => {
+  return await prisma.quoteItem.upsert({
+    where: {
+      id: quoteItem.id,
+    },
+    update: quoteItem,
+    create: quoteItem,
+  });
+};
+
+export const deleteQuoteItem = async (id: string) => {
+  return await prisma.quoteItem.delete({
+    where: {
+      id: id,
+    },
+  });
+};
+
+export const deleteQuoteItems = async (quoteId: string) => {
+  return await prisma.quoteItem.deleteMany({
+    where: {
+      quoteId: quoteId,
+    },
+  });
+};
+
+export const upsertQuoteItems = async (quoteId: string, quoteItems) => {
+  const upsertedItems = await Promise.all(
+    quoteItems.map(async (item) => {
+      return await prisma.quoteItem.upsert({
+        where: {
+          id: item.id,
+        },
+        update: item,
+        create: { ...item, quoteId: quoteId },
+      });
+    })
+  );
+  return upsertedItems;
+};
+
 export const createQuote = async (quote) => {
   return await prisma.quote.create({
     data: {

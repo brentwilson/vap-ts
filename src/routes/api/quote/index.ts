@@ -3,6 +3,8 @@ import {
   getQuotes,
   createQuote,
   updateQuote,
+  getQuoteItems,
+  getQuoteItem,
 } from "../../../services/quotesService";
 
 module.exports = async function (
@@ -24,6 +26,16 @@ module.exports = async function (
   fastify.get("/", async function (request, reply) {
     const quotes = await getQuotes(request.account);
     reply.send(quotes);
+  });
+
+  fastify.get("/quoteitems", async function (request, reply) {
+    const quoteItems = await getQuoteItems(request.account);
+    reply.send(quoteItems);
+  });
+
+  fastify.get("/quoteitems/:id", async function (request, reply) {
+    const quoteItem = await getQuoteItem(request.params.id);
+    reply.send(quoteItem);
   });
 
   fastify.post(
