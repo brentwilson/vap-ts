@@ -1,6 +1,58 @@
 {% extends 'admin/base.html' %} {% block maincontent %}
-<div id="orders"></div>
+<div id="orders-grid"></div>
 
 {% endblock maincontent %} {% block jscripts %}
-<script></script>
+<script>
+  $(document).ready(function () {
+    let ordersDS = new kendo.data.DataSource({
+      transport: {
+        read: {
+          url: "/api/orders",
+          dataType: "json",
+        },
+      },
+      schema: {
+        model: {
+          id: "id",
+          fields: {
+            id: {
+              type: "string",
+            },
+            account: {
+              type: "string",
+            },
+            status: {
+              type: "string",
+            },
+          },
+        },
+      },
+    });
+    $("#orders-grid").kendoGrid({
+      dataSource: ordersDS,
+      height: 550,
+      groupable: true,
+      sortable: true,
+      pageable: {
+        refresh: true,
+        pageSizes: true,
+        buttonCount: 5,
+      },
+      columns: [
+        {
+          field: "id",
+          filterable: false,
+        },
+        {
+          field: "account",
+          title: "Account",
+        },
+        {
+          field: "status",
+          title: "Status",
+        },
+      ],
+    });
+  });
+</script>
 {% endblock jscripts %}

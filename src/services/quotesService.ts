@@ -1,18 +1,29 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export const getQuotes = async (account) => {
-  return await prisma.quote.findMany({
+export const getQuotes = async (account: any) => {
+  let quotes = await prisma.quote.findMany({
     where: {
-      account: account
+      account: account,
     },
     include: {
-     items: true
+      items: true,
     },
     orderBy: {
-      createdAt: 'desc'
-    }
+      createdAt: "desc",
+    },
   });
+
+  // get total of all quote items in each quote
+  quotes = quotes.map((quote) => {
+    let total = 0;
+    quote.items.forEach((item) => {
+      total += item.price * item.quantity;
+    });
+    return { ...quote, total };
+  });
+
+  return quotes;
 };
 
 export const createQuote = async (quote) => {
@@ -20,41 +31,41 @@ export const createQuote = async (quote) => {
     data: {
       ...quote,
       items: {
-        create: quote.items
-      }
-    }
+        create: quote.items,
+      },
+    },
   });
 };
 
 export const updateQuote = async (quote) => {
   return await prisma.quote.update({
     where: {
-      id: quote.id
+      id: quote.id,
     },
     data: {
       ...quote,
       items: {
-        create: quote.items
-      }
-    }
+        create: quote.items,
+      },
+    },
   });
 };
 
-export const deleteQuote = async (id) => {
+export const deleteQuote = async (id: string) => {
   return await prisma.quote.delete({
     where: {
-      id: id
-    }
+      id: id,
+    },
   });
 };
 
-export const getQuote = async (id) => {
+export const getQuote = async (id: string) => {
   return await prisma.quote.findUnique({
     where: {
-      id: id
+      id: id,
     },
     include: {
-      items: true
-    }
+      items: true,
+    },
   });
-}
+};
