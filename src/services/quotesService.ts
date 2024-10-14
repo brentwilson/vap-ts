@@ -51,6 +51,26 @@ export const updateQuote = async (quote) => {
   });
 };
 
+export const upsertQuote = async (quote) => {
+  return await prisma.quote.upsert({
+    where: {
+      id: quote.id,
+    },
+    update: {
+      ...quote,
+      items: {
+        create: quote.items,
+      },
+    },
+    create: {
+      ...quote,
+      items: {
+        create: quote.items,
+      },
+    },
+  });
+};
+
 export const deleteQuote = async (id: string) => {
   return await prisma.quote.delete({
     where: {
