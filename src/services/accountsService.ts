@@ -6,7 +6,7 @@ export const getAccounts = async () => {
   return await prisma.account.findMany();
 };
 
-export const getAccount = async (id) => {
+export const getAccount = async (id: string) => {
   return await prisma.account.findUnique({
     where: {
       id: id,

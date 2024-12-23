@@ -1,4 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+
+interface account {
+  id: string;
+  email: string;
+  password: string;
+}
+
 const prisma = new PrismaClient().$extends({
   result: {
     quoteItem: {
